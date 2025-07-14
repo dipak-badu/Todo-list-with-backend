@@ -2,16 +2,16 @@ const mongoose = require('mongoose')
 const listSChema = new mongoose.Schema({
    title: {
     type:String,
-    required: ture
+    required: true
    } ,
    body: {
      type:String,
-    required: ture
+    required: true
    },
     user: {
-        type:mongoose.type.ObjectId,
+        type:mongoose.Types.ObjectId,
          ref: "User"
       }
 },{timestamps:true})
 
-module.exports = mongoose.model("List", ListSChema)
+module.exports = mongoose.model("List", listSChema)

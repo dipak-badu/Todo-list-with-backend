@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const userSChema = new mongoose.Schema({
    email: {
     type:String,
-    required: ture
+    required: true
    } ,
    username: {
      type:String,
@@ -10,12 +10,12 @@ const userSChema = new mongoose.Schema({
    },
    password: {
      type:String,
-    required: ture
+    required: true
    },
    list: {
-     type:mongoose.type.ObjectId,
+     type:mongoose.Types.ObjectId,
       ref: "List"
    }
 },{timestamps:true})
 
-module.exports = mongoose.model("User", ListSChema)
+module.exports = mongoose.model("User", userSChema)
