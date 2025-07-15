@@ -12,10 +12,10 @@ const userSChema = new mongoose.Schema({
      type:String,
     required: true
    },
-   list: {
+   list:[ {
      type:mongoose.Types.ObjectId,
       ref: "List"
-   }
+   }]
 },{timestamps:true})
 
 module.exports = mongoose.model("User", userSChema)
