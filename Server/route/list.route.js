@@ -31,8 +31,8 @@ res.status(201).json({
 
 // get all todos 
 router.get('/', wrapAsync(async(req, res)=>{
-   const todos = await Todo.find().populate('user', 'username');
-res.json({ todos });
+   const todos = await Todo.find().populate('user', 'username').sort({createdAt:-1 });
+res.status(200).json({ todos });
 
 }))
 
