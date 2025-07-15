@@ -1,9 +1,11 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const User = require('../models/user.model');
 const ExpressError = require('./ExpressError');
 
 const requireAuth = async (req, res, next) => {
   const authHeader = req.headers.authorization;
+  console.log(authHeader)
+  console.log("Authorization Header:", authHeader);
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     throw new ExpressError("Unauthorized: No token provided", 401);

@@ -5,8 +5,7 @@ const User = require('../models/user.model')
 const Todo = require('../models/list.model')
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
-const bcrypt = require('bcryptjs');
-const jwtSecret = process.env.JWT_SECRET
+
 const requireAuth = require('../utils/authmiddleware')
 
 router.use(requireAuth);
@@ -21,7 +20,7 @@ if(!title || !body){
 const newTodo  = new Todo({
     title, 
     body,
-    user:req.user_id,
+    user:req.user._id,
 })
 await newTodo.save();
 
@@ -32,8 +31,9 @@ res.status(201).json({
 
 // get all todos 
 router.get('/', wrapAsync(async(req, res)=>{
-    const todos   = await Todo.find()
-    res.json({todos}).populate('user', 'username')
+   const todos = await Todo.find().populate('user', 'username');
+res.json({ todos });
+
 }))
 
 // delete a todo 
@@ -42,7 +42,11 @@ router.delete("/:id",wrapAsync(async(req, res)=>{
     if(!id){
         throw new ExpressError('no id Found', 404);
 
-    }
+    } 
+    // check ownership do later 
+//     if (req.user._id.toString() !== Todo.user.toString()) {
+//   throw new ExpressError("Unauthorized: Not your todo", 403);
+// }
   let  delteTodo = await Todo.findByIdAndDelete(id)
   if(!delteTodo){
  throw new ExpressError('Todo not found!!', 404);
@@ -61,6 +65,10 @@ router.patch("/:id",wrapAsync(async(req, res)=>{
         throw new ExpressError('no id Found', 404);
 
     }
+
+//        if (req.user._id.toString() !== Todo.user.toString()) {
+//   throw new ExpressError("Unauthorized: Not your todo", 403);
+// }
   let  editTodo = await Todo.findByIdAndUpdate(id,
    {title, body},{
     new:true,
