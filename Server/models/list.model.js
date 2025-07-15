@@ -2,15 +2,22 @@ const mongoose = require('mongoose')
 const listSChema = new mongoose.Schema({
    title: {
     type:String,
-    required: true
+    required: true,
+       trim : true
    } ,
    body: {
      type:String,
-    required: true
+    required: true,
+    trim : true
    },
+   completed: {
+    type: Boolean,
+    default: false
+  },
     user: {
         type:mongoose.Types.ObjectId,
-         ref: "User"
+         ref: "User",
+         required: true
       }
 },{timestamps:true})
 
