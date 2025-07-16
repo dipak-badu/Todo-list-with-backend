@@ -13,13 +13,13 @@ const Navbar = () => {
     <div className="collapse navbar-collapse" id="navbarSupportedContent">
       <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
         <li className="nav-item mx-3 ">
-          <a className="nav-link active" aria-current="page" href="#">Home</a>
+          <a className="nav-link active nav-btn " aria-current="page" href="#">Home</a>
         </li>
            <li className="nav-item mx-3 ">
-          <a className="nav-link active" aria-current="page" href="#">About Us</a>
+          <a className="nav-link active nav-btn " aria-current="page" href="#">Todo</a>
         </li>
          <li className="nav-item mx-3 ">
-          <a className="nav-link active nav-btn" aria-current="page" href="#">Sign Up</a>
+          <a className="nav-link active nav-btn " aria-current="page" href="#">Sign Up</a>
         </li>
          <li className="nav-item mx-3 ">
           <a className="nav-link activ nav-btn" aria-current="page" href="#">Sign In</a>
@@ -27,9 +27,9 @@ const Navbar = () => {
          <li className="nav-item mx-3 ">
           <a className="nav-link active nav-btn" aria-current="page" href="#">Log Out</a>
         </li>
-         <li className="nav-item mx-3 ">
+         {/* <li className="nav-item mx-3 ">
           <a className="nav-link active" aria-current="page" href="#"><img className='user-png img-fluid' src="https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png" alt="img" /></a>
-        </li>
+        </li> */}
         </ul>
       </div>
   </div>
