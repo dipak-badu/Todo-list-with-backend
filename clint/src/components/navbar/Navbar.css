@@ -16,3 +16,8 @@
     font-weight: bold !important;
   }
 }
+
+.nav-btn{
+  text-decoration: none;
+  color: black
+}
