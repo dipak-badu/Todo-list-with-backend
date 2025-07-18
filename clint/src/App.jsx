@@ -4,6 +4,8 @@ import Navbar from './components/navbar/Navbar'
 import Home from './components/home/Home'
 import Footer from './components/footer/Footer'
 import About from './components/about/About'
+import Signup from './components/signup/Signup'
+import Signin from './components/signup/Signin'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 
@@ -19,12 +21,13 @@ function App() {
           <Route exact path='/' element={<Home/>} />
           <Route path='/about' element={<About/>} />
           <Route path='/todo' element={<Home/>} />
-          <Route path='/signup' element={<Home/>} />
-          <Route path='/signin' element={<Home/>} />
+          <Route path='/signup' element={<Signup/>} />
+          <Route path='/signin' element={<Signin/>} />
       </Routes>
+      <Footer/>
     </Router>
    
-    <Footer/>
+    
     </>
   )
 }

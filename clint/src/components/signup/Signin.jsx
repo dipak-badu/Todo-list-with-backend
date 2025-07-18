@@ -1,19 +1,22 @@
 import React from 'react'
 import './Signup.css'
 import HeadingComp from './HeadingComp'
-function Signup() {
+function Signin() {
   return (
-    <div className='signup '>
+  <div className='signup '>
       <div className='container'>
        <div className='row min-vh-100' >
+        <div className='col-lg-4 d-none d-lg-flex justify-content-center align-items-center '>
+          <HeadingComp first="Sign" second="In" />
+         </div>
          <div className='col-lg-8 col-12 col-md-8   '>
 
           <div className='d-flex flex-column column  justify-content-center  ' >
 
-            <input type="email" 
+            {/* <input type="email" 
              placeholder='Email*'  
             className='email p-2' 
-            name='email'/>
+            name='email'/> */}
           
 
           
@@ -30,19 +33,17 @@ function Signup() {
             name='password'/>
 
            <button className="btn  mt-3 px-4 py-2 fw-bold">
-  Sign Up
+  Sign In
 </button>
 
           </div>
 
          </div>
-         <div className='col-lg-4 d-none d-lg-flex justify-content-center align-items-center '>
-          <HeadingComp first="Sign" second="Up" />
-         </div>
+         
        </div>
       </div>
     </div>
   )
 }
 
-export default Signup 
+export default Signin
