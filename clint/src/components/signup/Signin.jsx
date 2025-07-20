@@ -5,7 +5,7 @@ function Signin() {
   return (
   <div className='signup '>
       <div className='container'>
-       <div className='row min-vh-100' >
+       <div className='row min-vh-100 ' >
         <div className='col-lg-4 d-none d-lg-flex justify-content-center align-items-center '>
           <HeadingComp first="Sign" second="In" />
          </div>
