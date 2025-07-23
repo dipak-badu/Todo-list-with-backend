@@ -3,8 +3,10 @@ import './Signup.css'
 import HeadingComp from './HeadingComp'
 import axios from 'axios'
 import { toast } from 'react-toastify';
+import {useNavigate} from "react-router-dom";
 
 function Signup() {
+  const history = useNavigate();
 const [input, setInput] = useState({ email: "", username : "", password:"" });
 
 const handleChange = (e) => {
@@ -31,6 +33,7 @@ const handleChange = (e) => {
 
     // Clear form
     setInput({ email: "", username: "", password: "" });
+    history("/Signin")
 
   } catch (error) {
     const msg = error?.response?.data?.message  || "Something went wrong!";

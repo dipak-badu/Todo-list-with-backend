@@ -1,7 +1,47 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Signup.css'
+import { toast } from 'react-toastify';
 import HeadingComp from './HeadingComp'
+import {useNavigate} from "react-router-dom";
+import axios from 'axios'
 function Signin() {
+  const history = useNavigate();
+const [input, setInput] = useState({ emailOrUsername: "",  password:"" });
+
+const handleChange = (e) => {
+    const { name, value } = e.target;
+    setInput((prev) => ({ ...prev, [name]: value }));
+  };
+
+
+
+
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  // Client-side validation
+  if (!input.emailOrUsername  || !input.password) {
+    toast.warn(" Please fill out all fields.");
+    return;
+  }
+
+  try {
+    const res = await axios.post('http://localhost:3000/api/v1/login', input);
+
+    toast.success(res.data.message);
+
+    // Clear form
+    setInput({ emailOrUsername: "", password: "" });
+    history("/todo")
+
+  } catch (error) {
+    const msg = error?.response?.data?.message  || "Something went wrong!";
+   
+    toast.error(msg);
+    console.error("Signip Error:", msg);
+  }
+};
+
   return (
   <div className='signup '>
       <div className='container'>
@@ -21,18 +61,23 @@ function Signin() {
 
           
             <input type="text" 
-           placeholder='username*'  
+           placeholder='emailorusername*'  
             className='username p-2 my-3' 
-            name='username'/>
+            name='emailOrUsername'
+            value={input.emailOrUsername} 
+            onChange={handleChange}/>
           
 
           
             <input type="password" 
             placeholder='Password*'  
             className='password p-2' 
-            name='password'/>
+            name='password'
+            value={input.password}
+            onChange={handleChange}/>
 
-           <button className="btn  mt-3 px-4 py-2 fw-bold">
+           <button className="btn  mt-3 px-4 py-2 fw-bold"
+           onClick={handleSubmit}>
   Sign In
 </button>
 
