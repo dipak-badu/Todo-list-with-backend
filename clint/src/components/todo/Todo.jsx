@@ -30,9 +30,9 @@ function Todo() {
     }
   };
 
-  useEffect(() => {
-    console.log('Updated Todos:', todos);
-  }, [todos]);
+  // useEffect(() => {
+  //   console.log('Updated Todos:', todos);
+  // }, [todos]);
 
 const del = (id)=>{
 console.log(id)
