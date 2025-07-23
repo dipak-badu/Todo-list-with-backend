@@ -5,6 +5,7 @@
   width: 100%;
   padding: 2rem 0;
   background-color: #f8f9fa;
+  position: relative;
 }
 
 .todo-main {
@@ -112,3 +113,30 @@
 .card-icon:hover{
     box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 15px;
 }
+
+.todo-update{
+  /* display: none; */
+  position: absolute;
+  position: fixed;
+  height:80vh;
+  width: 99%;
+  background-color: green;
+  top:100px;
+  left:0px;
+  border-radius: 20px;
+  display:none;
+
+
+}
+
+ update-input-wrpper{
+  width: 100%;
+ }
+
+
+ .cross-update{
+  font-size: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  display: block;
+ }
