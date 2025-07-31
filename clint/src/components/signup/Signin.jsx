@@ -4,8 +4,13 @@ import { toast } from 'react-toastify';
 import HeadingComp from './HeadingComp'
 import {useNavigate} from "react-router-dom";
 import axios from 'axios'
+import {useDispatch} from 'react-redux'
+import {authActions} from '../../store'
+
 function Signin() {
   const history = useNavigate();
+
+  const dispatch = useDispatch();
 const [input, setInput] = useState({ emailOrUsername: "",  password:"" });
 
 const handleChange = (e) => {
@@ -27,18 +32,24 @@ const handleChange = (e) => {
 
   try {
     const res = await axios.post('http://localhost:3000/api/v1/login', input);
-
-    toast.success(res.data.message);
-
+ sessionStorage.setItem('token', res.data.token)
+  
+   
+      dispatch(authActions.login())
+        
     // Clear form
     setInput({ emailOrUsername: "", password: "" });
-    history("/todo")
+toast.success(res.data.message);
+      setTimeout(() => {
+      history('/todo'); 
+    }, 1000); 
+  
 
   } catch (error) {
     const msg = error?.response?.data?.message  || "Something went wrong!";
    
     toast.error(msg);
-    console.error("Signip Error:", msg);
+    console.error("Signin Error:", msg);
   }
 };
 

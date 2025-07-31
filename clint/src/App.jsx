@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState  , useEffect} from 'react'
 import './App.css'
 import { ToastContainer} from 'react-toastify';
-
+import { useDispatch,  } from 'react-redux';
+import {authActions} from './store'
 import Navbar from './components/navbar/Navbar'
 import Home from './components/home/Home'
 import Footer from './components/footer/Footer'
@@ -10,10 +11,17 @@ import Signup from './components/signup/Signup'
 import Signin from './components/signup/Signin'
 import Todo from './components/todo/Todo'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+ 
 
 
 function App() {
- 
+ const dispatch = useDispatch();
+useEffect(() => {
+  const token = sessionStorage.getItem('token')
+  if (token) {
+    dispatch(authActions.login());
+  }
+}, []);
 
   return (
     <>
