@@ -9,7 +9,8 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
- const history = useNavigate();
+
+ const navigate = useNavigate();
   const isLoggedIn = useSelector((state)=>state.auth.isLoggedIn)
   const dispatch = useDispatch();
 
@@ -18,15 +19,16 @@ const Navbar = () => {
     dispatch(authActions.logout())
     toast.success("Logged out successfully")
       setTimeout(() => {
-      history('/signin');  // navigate after toast shows
+      navigate('/signin');  // navigate after toast shows
     }, 1000); // 1.5 seconds delay
   
   }
+  
   return (
     <div>
       <nav className="navbar navbar-expand-lg ">
   <div className="container">
-    <Link className="navbar-brand nav-todo" to="#"><b><FaBook /> &nbsp; todo</b></Link>
+    <Link className="navbar-brand nav-todo" to="/" ><b><FaBook /> &nbsp;todo</b></Link>
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
     </button>

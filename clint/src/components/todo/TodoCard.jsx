@@ -5,7 +5,7 @@ import { CiEdit } from "react-icons/ci";
 import { Link } from 'react-router-dom';
 
 
-function TodoCard({title , body ,_id , delId , display ,user , username , toBeupdate}) 
+function TodoCard({title , body ,_id , delId , display ,user , username , toBeupdate, }) 
 {
   const currentUser = sessionStorage.getItem('userId')
  
@@ -14,7 +14,7 @@ function TodoCard({title , body ,_id , delId , display ,user , username , toBeup
      <div>
       <h5 className='t-title'>{title} </h5>
      <p className='todo-card-p'>{body?.substring(0, 20)}...</p>
-      <p>owned by <b>{username}</b></p>
+      {/* <p>owned by <b>{username}</b></p> */}
      </div>
     {
       currentUser === user && (<div className='d-flex justify-content-between align-items-end mt-1 fs-4 '> 

@@ -8,9 +8,6 @@ import Update from './Update';
 import axios from 'axios';
 import { authActions } from '../../store';
 import {useNavigate} from "react-router-dom";
-let updateTodo = [];
-
-
 
 
 function Todo() {
@@ -18,13 +15,17 @@ function Todo() {
   const [input, setInput] = useState({ title: '', body: '' });
   const [todos, setTodos] = useState([]);
   const [showTextarea, setShowTextarea] = useState(false);
-
+  const [updatedTodo, setTodoToUpdate]= useState(null);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInput((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async() => {
+    if(input.title.trim()==="" && input.body.trim()===''){
+       toast.error('Input fiels can not be empty.')
+       return;
+    }
    const token = sessionStorage.getItem('token');
    if(!token){
     toast.error("please sign in first to save task");
@@ -37,10 +38,11 @@ function Todo() {
             Authorization: `Bearer ${token}`,
           },
     })
- setTodos((prev) => [...prev, res.data.todo]);
+ setTodos((prev) => [res.data.todo, ...prev]);
       setInput({ title: '', body: '' });
       setShowTextarea(false);
       toast.success("Task is  added.")
+     
    } catch (error) {
      toast.error("Failed to save task. Please try again.");
       console.error(err);
@@ -101,10 +103,45 @@ console.log(`Delaeting id : ${_id}`)
   }
 }
 
-const update = async(_id) =>{
- updateTodo =  todos[_id]
+const update = (_id) => {
+  const found = todos.find(todo => todo._id === _id);
+  console.log("✅ Found todo:", found); // should print the correct object
+  setTodoToUpdate(found);
+};
+
+const handleUpdateSubmit = async(updatedTodo)=>{
+  const token = sessionStorage.getItem('token')
+  console.log("oure token" ,token)
+if(!token){
+  toast.error("Please signup first to delete task.")
+  history('/signup');
+  return;
 }
 
+try {
+const res = await axios.patch(`http://localhost:3000/api/v1/todo/${updatedTodo._id}`,
+{
+  title:updatedTodo.title,
+  body:updatedTodo.body
+},{
+  headers:{Authorization: `Bearer ${token}`}
+}
+);
+setTodos(prev=>
+  prev.map(todo=> todo._id === updatedTodo._id ? res.data.todo:todo)
+)
+
+toast.success("Task updated successfully!")
+ hideUpadate()
+
+setTodoToUpdate(null)
+} catch (error) {
+  const msg = error?.response?.data?.message || "Failed to update task.";
+    console.error("Update error:", error);
+    toast.error(msg);
+}
+
+}
 const displayUpadate =()=>{
   document.querySelector("#todo-update").style.display="block";
 }
@@ -112,6 +149,7 @@ const displayUpadate =()=>{
 const hideUpadate =()=>{
   document.querySelector("#todo-update").style.display="none";
 }
+
 
   return (
     <>
@@ -169,7 +207,9 @@ const hideUpadate =()=>{
        <div className='d-flex justify-content-end align-items-end px-2 py-2  cross-update' onClick={hideUpadate} > <RxCross1/> </div>
        <div className="container d-flex justify-content-center align-items-center flex-column mt-4 ">
          <h1 >Update task</h1>
-       <Update update={updateTodo} />
+       <Update update={updatedTodo}  
+       display={displayUpadate}
+       onSubmit={handleUpdateSubmit}/>
        </div>
     </div>
     </>
