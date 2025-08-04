@@ -5,11 +5,16 @@ import TodoCard from './TodoCard';
 import { RxCross1 } from "react-icons/rx";
 import { ToastContainer, toast } from 'react-toastify';
 import Update from './Update';
+import axios from 'axios';
+import { authActions } from '../../store';
+import {useNavigate} from "react-router-dom";
+let updateTodo = [];
 
 
 
 
 function Todo() {
+  const navigate = useNavigate( )
   const [input, setInput] = useState({ title: '', body: '' });
   const [todos, setTodos] = useState([]);
   const [showTextarea, setShowTextarea] = useState(false);
@@ -19,29 +24,85 @@ function Todo() {
     setInput((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = () => {
-    if (input.title.trim()) {
-     
-      setTodos((prev) => [...prev, input]);
+  const handleSubmit = async() => {
+   const token = sessionStorage.getItem('token');
+   if(!token){
+    toast.error("please sign in first to save task");
+       navigate('/signup')
+    
+   }
+   try {
+    const res = await axios.post('http://localhost:3000/api/v1/todo/addTask', input, {
+       headers: {
+            Authorization: `Bearer ${token}`,
+          },
+    })
+ setTodos((prev) => [...prev, res.data.todo]);
       setInput({ title: '', body: '' });
       setShowTextarea(false);
-      toast.success("Task is  added")
-      toast.error("Task is added but not saved please signup first")
-
-    }
+      toast.success("Task is  added.")
+   } catch (error) {
+     toast.error("Failed to save task. Please try again.");
+      console.error(err);
+   }
   };
 
-  // useEffect(() => {
-  //   console.log('Updated Todos:', todos);
-  // }, [todos]);
+   useEffect(() => {
+    const fetchTodos = async () => {
+      const token = sessionStorage.getItem('token');
+      if (!token) {
+        alert("Please signsin first.");
+        navigate('/signup')
+        return;
+      }
 
-const del = (id)=>{
-console.log(id)
-todos.splice(id , '1')
- setTodos((prev) => [...prev]);
- toast.success("Task is deleted")
+      try {
+        const res = await axios.get('http://localhost:3000/api/v1/todo', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const formatedTodo = res.data.todos.map(todo=>({
+          ...todo, 
+          user:{
+            _id: todo.user?._id,
+            username: todo.user?.username
+          }
+        }))
+        setTodos(formatedTodo);
+      } catch (err) {
+        const msg = err?.response?.data?.message || "Unauthorized or token expired.";
+        toast.error(msg);
+        console.error(msg);
+      }
+    };
 
+    fetchTodos();
+  }, []);
 
+const del = async(_id)=>{
+const token = sessionStorage.getItem('token');
+if(!token){
+  toast.error("Please signup first to delete task.")
+  history('/signup');
+  return;
+}
+console.log(`Delaeting id : ${_id}`)
+  try {
+    
+    await axios.delete(`http://localhost:3000/api/v1/todo/${_id}`, {
+      headers:{Authorization:`Bearer ${token}`}
+    });
+
+    setTodos((prev)=>prev.filter(todo => todo._id !== _id));
+    toast.success('Task is deleted successfylly.')
+  } catch (error) {
+    toast.error("Failed to delete task.")
+  }
+}
+
+const update = async(_id) =>{
+ updateTodo =  todos[_id]
 }
 
 const displayUpadate =()=>{
@@ -87,10 +148,17 @@ const hideUpadate =()=>{
           <div className='row'>
             {todos.map((todo, idx) => (
               <div className='col-lg-4 col-md-6 col-sm-12 mb-3' key={idx}>
-                <TodoCard title={todo.title} body={todo.body} id = {idx}
+                <TodoCard 
+                title={todo.title} 
+                body={todo.body} 
+                _id ={todo._id} 
+                 user = {todo.user._id}
+                username = {todo.user.username}
                 delId = {del}
                 display={displayUpadate}
+                toBeupdate = {update}
                 />
+
               </div>
             ))}
           </div>
@@ -101,7 +169,7 @@ const hideUpadate =()=>{
        <div className='d-flex justify-content-end align-items-end px-2 py-2  cross-update' onClick={hideUpadate} > <RxCross1/> </div>
        <div className="container d-flex justify-content-center align-items-center flex-column mt-4 ">
          <h1 >Update task</h1>
-       <Update title={input.title} body={input.body} />
+       <Update update={updateTodo} />
        </div>
     </div>
     </>

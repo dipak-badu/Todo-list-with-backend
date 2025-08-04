@@ -6,12 +6,13 @@ const Todo = require('../models/list.model')
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 
+
 const requireAuth = require('../utils/authmiddleware')
 
 router.use(requireAuth);
 
 // add todo
-router.post('/addTask', wrapAsync(async(req, res)=>{
+router.post('/addTask', requireAuth, wrapAsync(async(req, res)=>{
 const { title, body} = req.body
 
 if(!title || !body){
@@ -30,14 +31,18 @@ res.status(201).json({
 }))
 
 // get all todos 
-router.get('/', wrapAsync(async(req, res)=>{
+router.get('/',  requireAuth,  wrapAsync(async(req, res)=>{
    const todos = await Todo.find().populate('user', 'username').sort({createdAt:-1 });
+   if(!todos){
+    throw new ExpressError("No todos found!! ", 404)
+   }
+
 res.status(200).json({ todos });
 
 }))
 
 // delete a todo 
-router.delete("/:id",wrapAsync(async(req, res)=>{
+router.delete("/:id", requireAuth, wrapAsync(async(req, res)=>{
     let {id} = req.params;
     if(!id){
         throw new ExpressError('no id Found', 404);
@@ -58,7 +63,7 @@ router.delete("/:id",wrapAsync(async(req, res)=>{
 }))
 
 // edit Todo 
-router.patch("/:id",wrapAsync(async(req, res)=>{
+router.patch("/:id", requireAuth, wrapAsync(async(req, res)=>{
     let {id} = req.params;
     const {title, body} = req.body;
     if(!id){

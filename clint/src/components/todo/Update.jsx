@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Update({title, body}) {
+function Update({update}) {
   return (
     
       <div>
@@ -10,7 +10,7 @@ function Update({title, body}) {
             type='text'
             name='title'
             placeholder='Title*'
-           value={title}
+           value={update.title}
            
             className='input-field'
           />
@@ -19,7 +19,7 @@ function Update({title, body}) {
             <textarea
               name='body'
               placeholder='Body*'
-              value={title}
+              value={update.body}
               className='input-field textarea'
             />
           

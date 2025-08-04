@@ -24,7 +24,7 @@ app.get('/', (req, res)=>{
 })
 
 app.use('/api/v1', auth);
-app.use('/api/v2', todo);
+app.use('/api/v1/todo', todo);
 
 app.use(errorHandler);
 

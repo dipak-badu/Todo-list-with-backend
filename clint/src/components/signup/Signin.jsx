@@ -33,7 +33,7 @@ const handleChange = (e) => {
   try {
     const res = await axios.post('http://localhost:3000/api/v1/login', input);
  sessionStorage.setItem('token', res.data.token)
-  
+  sessionStorage.setItem('userId', res.data.user._id);
    
       dispatch(authActions.login())
         
